@@ -1,94 +1,33 @@
-# PyHamiltonSteps
+# py-hamilton-step
 
-## What this is meant to do
+A Python library that exposes Hamilton Venus steps directly as Python functions. One function per step, all parameters preserved, no additional abstraction.
 
-PyHamiltonSteps provides a **direct, one-to-one Python interface to Hamilton Venus steps**.
+## Why this exists
 
-Each Venus step is exposed as a Python function with all parameters preserved. There is no abstraction layer, no workflow logic, and no hidden behavior.
+Existing approaches to Hamilton automation tend to make decisions on your behalf: they hide parameters, infer behavior, or impose workflow structure. PyHamiltonSteps does none of that. It is a thin, honest binding to Venus, the kind of foundation you can build on without fighting the library.
 
-The purpose:
+The intended use case is AI-driven protocol composition, where an agent needs to call steps directly without a library second-guessing its decisions. A system that hides complexity is a liability here; this one doesn't.
 
-- Give complete, explicit control over the Hamilton STAR robot  
-- Mirror Venus behavior as closely as possible  
-- Avoid introducing opinionated layers between the user and the instrument  
+## Design principles
 
----
+**No abstraction.** Every Venus step is exposed with its full parameter set. Nothing is inferred or defaulted away from you.
 
-## What this foundation provides
+**Constrained where it matters.** Liquid classes are defined enumerations, not free strings. The places where wrong values cause instrument damage are exactly the places where constraints belong.
 
-PyHamiltonSteps is designed as a **foundation layer**.
+**One command at a time.** The execution model is strictly sequential. There is no concurrency, no queueing, no ambiguity about what the instrument is doing.
 
-It establishes a deterministic, low-level interface that other systems can build on without interference.
+**Serial over HTTP.** Communication uses a persistent JSON protocol over a virtual serial connection. PyHamilton's HTTP polling approach causes log file flooding; this doesn't.
 
-### Core capabilities
+**Log-based validation.** Hamilton's native log output is the source of truth for test validation, with no parallel truth sources.
 
-- **1:1 mapping of Venus steps to Python functions**
-- **Full parameter transparency** — nothing is hidden or inferred  
-- **Single-step execution model** — only one command runs at a time  
-- **Deterministic communication** via persistent serial connection  
-- **Log-based validation** using Hamilton’s native output as the source of truth  
-- **Strict liquid class constraints** using defined enumerations  
+## Planned architecture
 
-### Communication model
+PyHamiltonSteps is the foundation layer of a three-tier system, currently under development:
 
-- JSON command/response protocol  
-- Persistent serial connection (no HTTP polling)  
-- Blocking execution (no asynchronous ambiguity)  
-- Designed to minimize log noise and avoid flooding  
+- **PyHamiltonSteps** — local Python library communicating with Venus via virtual serial port (com0com on Windows x64, Parallels on development environments)
+- **FastAPI layer** — REST interface making the local library network-accessible for multi-instrument orchestration
+- **MCP layer** — Model Context Protocol wrapper exposing Hamilton control as tools to AI agents
 
----
+## License
 
-## What this enables
-
-Because this library does not abstract or interpret behavior, it becomes a great foundation for higher level systems.
-
-### AI-driven protocol composition
-
-AI systems can:
-
-- Call Venus steps directly as tools  
-- Compose complex protocols step-by-step  
-- Operate without guessing or reverse-engineering behavior  
-
-There is no hidden logic to conflict with.
-
----
-
-### REST-based orchestration (FastAPI layer)
-
-A FastAPI layer can expose this local control interface over a network.
-
-This enables:
-
-- Coordination across multiple Hamilton instruments  
-- Remote execution of liquid handling steps  
-- Multi-machine orchestration without modifying the core system  
-
----
-
-### Model-driven control (MCP layer)
-
-A Model Context Protocol (MCP) wrapper exposes Hamilton control as structured tools.
-
-This allows:
-
-- LLMs to reason about and execute real laboratory actions  
-- Tool-based interaction with the instrument  
-- Safe, bounded execution through explicit step calls  
-
----
-
-## Architecture
-
-- **PyHamiltonSteps (core)**  
-  Local Python library communicating directly with Venus via a persistent serial JSON protocol  
-
-- **FastAPI layer**  
-  Network-accessible REST interface for orchestration across systems  
-
-- **MCP layer**  
-  AI-facing interface exposing Hamilton control as tools  
-
----
-
-This system is intentionally minimal so higher-level systems can build on it cleanly.
+Apache 2.0
