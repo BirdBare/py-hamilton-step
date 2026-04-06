@@ -6,9 +6,7 @@ platforms = ["osx-arm64"]
 version = "0.1.0"
 
 [tasks]
-fix_heartbeat_socket = { cmd = "sudo chmod 777 /Users/birdbare/Parallels/venus_star_heartbeat.sock"}
-fix_commands_socket = { cmd = "sudo chmod 777 /Users/birdbare/Parallels/venus_star_commands.sock"}
-fix_sockets = {depends-on=["fix_heartbeat_socket","fix_commands_socket"]}
+fix_socket = { cmd = "sudo chmod 777 /Users/birdbare/Parallels/venus_star.sock"}
 
 [dependencies]
 python = "3.13.*"
