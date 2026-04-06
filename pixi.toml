@@ -1,0 +1,18 @@
+[workspace]
+authors = ["Bradley Bare <bradleybare@gmail.com>"]
+channels = ["conda-forge"]
+name = "PyHamiltonSteps"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+fix_heartbeat_socket = { cmd = "sudo chmod 777 /Users/birdbare/Parallels/venus_star_heartbeat.sock"}
+fix_commands_socket = { cmd = "sudo chmod 777 /Users/birdbare/Parallels/venus_star_commands.sock"}
+fix_sockets = {depends-on=["fix_heartbeat_socket","fix_commands_socket"]}
+
+[dependencies]
+python = "3.13.*"
+
+[pypi-dependencies]
+pyserial = ">=3.5, <4"
+pydantic = ">=2.12.5, <3"
