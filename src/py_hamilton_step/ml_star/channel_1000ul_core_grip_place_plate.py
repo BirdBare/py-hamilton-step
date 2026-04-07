@@ -5,7 +5,7 @@ from ..hamilton import HamiltonCommand, HamiltonResponse
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class Channel1000ulCoreGripGetPlate(HamiltonCommand):
+class Channel1000ulCoreGripPlacePlate(HamiltonCommand):
     transport_mode: typing.Literal["Plate only", "Lid only", "Plate with lid"] = "Plate only"
     plate_sequence_labware: str | None = None
     lid_sequence_labware: str | None = None
