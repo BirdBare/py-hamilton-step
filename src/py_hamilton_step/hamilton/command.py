@@ -35,7 +35,7 @@ class HamiltonCommand(abc.ABC, typing.Generic[HamiltonResponseType]):
         return {
             "id": str(self.id),
             "command": self.__class__.__name__,
-            "args": {"venus_handle_errors": self.venus_handle_errors},
+            "args": {"venus_handle_errors": str(self.venus_handle_errors)},
         }
 
     @abc.abstractmethod
