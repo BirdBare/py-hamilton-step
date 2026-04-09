@@ -31,4 +31,14 @@ class HamiltonDevice:
 
         self.busy = False
 
-        return command.parse_response(json.loads(self.connection.receive()))
+        response_data = json.loads(self.connection.receive())
+
+        # This is a non recoverable program related error. We do not attempt to recover these. Only recover device errors.
+        if response_data["programmatic_error_description"] != "":
+            raise RuntimeError(
+                f"Error occurred while executing command: {response_data['programmatic_error_description']}",
+            )
+
+        del response_data["programmatic_error_description"]
+
+        return command.parse_response(response_data)
