@@ -6,19 +6,51 @@ from ..hamilton import HamiltonCommand, HamiltonResponse, HamiltonStepReturnBloc
 
 @dataclasses.dataclass(frozen=True)
 class Channel1000ulCoreGripPlacePlateResponse(HamiltonResponse):
-    raw_channel_sequences_with_recovery_data: str
-    channel_sequences_with_recovery_data: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    raw_place_plate_data_with_recovery_details: str
+    place_plate_data_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    raw_channel_sequences_with_recovery_details: str
+    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
 
     def __post_init__(self):
         object.__setattr__(
             self,
-            "channel_sequences_with_recovery_data",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_data),
+            "place_plate_data_with_recovery_details",
+            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_place_plate_data_with_recovery_details),
+        )
+        object.__setattr__(
+            self,
+            "channel_sequences_with_recovery_details",
+            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
         )
 
 
+_transport_mode_setting_by_name = {
+    "Plate only": 0,
+    "Lid only": 1,
+    "Plate with lid": 2,
+}
+
+_x_acceleration_level_setting_by_name = {
+    "X acceleration level 1": 0,
+    "X acceleration level 2": 1,
+    "X acceleration level 3": 2,
+    "X acceleration level 4": 3,
+    "X acceleration level 5": 4,
+}
+
+_on_off_setting_by_name = {
+    "Off": 0,
+    "On": 1,
+}
+
+_yes_no_setting_by_name = {
+    "No": 0,
+    "Yes": 1,
+}
+
+
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class Channel1000ulCoreGripPlacePlate(HamiltonCommand):
+class Channel1000ulCoreGripPlacePlateCommand(HamiltonCommand):
     transport_mode: typing.Literal["Plate only", "Lid only", "Plate with lid"] = "Plate only"
     plate_sequence_labware: str | None = None
     lid_sequence_labware: str | None = None
@@ -39,19 +71,22 @@ class Channel1000ulCoreGripPlacePlate(HamiltonCommand):
     def as_dict(self) -> dict:
         command_dict = super().as_dict()
 
-        command_dict["transport_mode"] = self.transport_mode
-        command_dict["plate_sequence_labware"] = self.plate_sequence_labware
-        command_dict["lid_sequence_labware"] = self.lid_sequence_labware
-        command_dict["eject_tool_when_finish"] = self.eject_tool_when_finish
-        command_dict["x_acceleration_level"] = self.x_acceleration_level
-        command_dict["z_speed_mm_per_s"] = self.z_speed_mm_per_s
-        command_dict["plate_press_on_distance_mm"] = self.plate_press_on_distance_mm
-        command_dict["check_if_plate_exists"] = self.check_if_plate_exists
+        args = command_dict["args"]
+
+        args["transport_mode"] = _transport_mode_setting_by_name[self.transport_mode]
+        args["plate_sequence_labware"] = str(self.plate_sequence_labware)
+        args["lid_sequence_labware"] = str(self.lid_sequence_labware)
+        args["eject_tool_when_finish"] = _yes_no_setting_by_name[self.eject_tool_when_finish]
+        args["x_acceleration_level"] = _x_acceleration_level_setting_by_name[self.x_acceleration_level]
+        args["z_speed_mm_per_s"] = self.z_speed_mm_per_s
+        args["plate_press_on_distance_mm"] = self.plate_press_on_distance_mm
+        args["check_if_plate_exists"] = _on_off_setting_by_name[self.check_if_plate_exists]
 
         return command_dict
 
     def parse_response(self, data: dict) -> Channel1000ulCoreGripPlacePlateResponse:
         return Channel1000ulCoreGripPlacePlateResponse(
             command_id=data["command_id"],
-            raw_channel_sequences_with_recovery_data=data["raw_channel_sequences_with_recovery_data"],
+            raw_place_plate_data_with_recovery_details=data["raw_place_plate_data_with_recovery_details"],
+            raw_channel_sequences_with_recovery_details=data["raw_channel_sequences_with_recovery_details"],
         )

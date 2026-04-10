@@ -6,19 +6,38 @@ from ..hamilton import HamiltonCommand, HamiltonResponse, HamiltonStepReturnBloc
 
 @dataclasses.dataclass(frozen=True)
 class Channel1000ulCoreGripGetPlateResponse(HamiltonResponse):
-    raw_channel_sequences_with_recovery_data: str
-    channel_sequences_with_recovery_data: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    raw_get_plate_data_with_recovery_details: str
+    get_plate_data_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    raw_channel_sequences_with_recovery_details: str
+    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
 
     def __post_init__(self):
         object.__setattr__(
             self,
-            "channel_sequences_with_recovery_data",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_data),
+            "get_plate_data_with_recovery_details",
+            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_get_plate_data_with_recovery_details),
+        )
+        object.__setattr__(
+            self,
+            "channel_sequences_with_recovery_details",
+            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
         )
 
 
+_transport_mode_setting_by_name = {
+    "Plate only": 0,
+    "Lid only": 1,
+    "Plate with lid": 2,
+}
+
+_on_off_setting_by_name = {
+    "Off": 0,
+    "On": 1,
+}
+
+
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class Channel1000ulCoreGripGetPlate(HamiltonCommand):
+class Channel1000ulCoreGripGetPlateCommand(HamiltonCommand):
     transport_mode: typing.Literal["Plate only", "Lid only", "Plate with lid"] = "Plate only"
     plate_sequence_labware: str | None = None
     lid_sequence_labware: str | None = None
@@ -61,22 +80,25 @@ class Channel1000ulCoreGripGetPlate(HamiltonCommand):
     def as_dict(self) -> dict:
         command_dict = super().as_dict()
 
-        command_dict["transport_mode"] = self.transport_mode
-        command_dict["plate_sequence_labware"] = self.plate_sequence_labware
-        command_dict["lid_sequence_labware"] = self.lid_sequence_labware
-        command_dict["gripper_tool_sequence_labware"] = self.gripper_tool_sequence_labware
-        command_dict["used_front_channel"] = self.used_front_channel
-        command_dict["grip_height_mm"] = self.grip_height_mm
-        command_dict["grip_width_mm"] = self.grip_width_mm
-        command_dict["opening_width_before_access"] = self.opening_width_before_access
-        command_dict["grip_speed_mm_per_s"] = self.grip_speed_mm_per_s
-        command_dict["z_speed_mm_per_s"] = self.z_speed_mm_per_s
-        command_dict["check_if_plate_exists"] = self.check_if_plate_exists
+        args = command_dict["args"]
+
+        args["transport_mode"] = _transport_mode_setting_by_name[self.transport_mode]
+        args["plate_sequence_labware"] = str(self.plate_sequence_labware)
+        args["lid_sequence_labware"] = str(self.lid_sequence_labware)
+        args["gripper_tool_sequence_labware"] = self.gripper_tool_sequence_labware
+        args["used_front_channel"] = self.used_front_channel
+        args["grip_height_mm"] = self.grip_height_mm
+        args["grip_width_mm"] = self.grip_width_mm
+        args["opening_width_before_access"] = self.opening_width_before_access
+        args["grip_speed_mm_per_s"] = self.grip_speed_mm_per_s
+        args["z_speed_mm_per_s"] = self.z_speed_mm_per_s
+        args["check_if_plate_exists"] = _on_off_setting_by_name[self.check_if_plate_exists]
 
         return command_dict
 
     def parse_response(self, data: dict) -> Channel1000ulCoreGripGetPlateResponse:
         return Channel1000ulCoreGripGetPlateResponse(
             command_id=data["command_id"],
-            raw_channel_sequences_with_recovery_data=data["raw_channel_sequences_with_recovery_data"],
+            raw_get_plate_data_with_recovery_details=data["raw_get_plate_data_with_recovery_details"],
+            raw_channel_sequences_with_recovery_details=data["raw_channel_sequences_with_recovery_details"],
         )
