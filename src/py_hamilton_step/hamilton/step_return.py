@@ -111,36 +111,36 @@ class HamiltonStepReturnBlockDataPackage:
 
 
 @dataclasses.dataclass(frozen=True)
-class HamiltonStepReturnDescriptionPackage:
+class HamiltonStepReturnStructuredDataPackage:
     """Base class for hamilton block data package."""
 
     @dataclasses.dataclass(frozen=True)
-    class _StepReturnDescription:
+    class _StepReturnStructuredData:
         """Base class for hamilton block data."""
 
         num: int
-        description: typing.Any
+        data: typing.Any
 
-    descriptions: list[_StepReturnDescription]
+    structured_data: list[_StepReturnStructuredData]
 
     @staticmethod
-    def parse_raw_step_return(raw_step_return: str) -> "HamiltonStepReturnDescriptionPackage":
+    def parse_raw_step_return(raw_step_return: str) -> "HamiltonStepReturnStructuredDataPackage":
         raw_description_data = raw_step_return.split("[")
         raw_description_data.pop(0)  # First element is always empty.
 
-        descriptions = []
+        structured_data = []
         for data in raw_description_data:
             values = data.split(",")
             if len(values) != 2:
                 raise ValueError(f"Invalid description data: {data}")
 
-            descriptions.append(
-                HamiltonStepReturnDescriptionPackage._StepReturnDescription(
+            structured_data.append(
+                HamiltonStepReturnStructuredDataPackage._StepReturnStructuredData(
                     num=int(values[0]),
-                    description=values[1],
+                    data=values[1],
                 ),
             )
 
-        return HamiltonStepReturnDescriptionPackage(
-            descriptions=descriptions,
+        return HamiltonStepReturnStructuredDataPackage(
+            structured_data=structured_data,
         )
