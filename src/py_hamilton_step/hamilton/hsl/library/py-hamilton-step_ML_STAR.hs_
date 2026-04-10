@@ -1,0 +1,18 @@
+
+// this ALWAYS GENERATED file contains the sub-method library header
+// Generated at 4/9/2026 9:51:17 PM
+
+#pragma once
+#ifndef HSL_RUNTIME
+namespace PY_HAMILTON_STEP_ML_STAR {
+function _InitLibrary() { }
+function _ExitLibrary() { }
+function CheckCommandExists( variable str_command_name ) variable {  return (0); }
+function ExecuteCommand( device & ML_STAR, variable str_command_name, object & json_args_packet, object & json_response_packet ) variable {  return (0); }
+} // namespace
+#endif
+
+#ifdef HSL_RUNTIME
+#include __filename__ ".hsi"
+#endif
+// $$author=birdbare$$valid=0$$time=2026-04-09 21:51$$checksum=e0bd3516$$length=085$$

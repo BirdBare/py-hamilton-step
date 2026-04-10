@@ -1,0 +1,67 @@
+// {{{ 2 "SubmethodForwardDeclaration" ""
+private function ThreadGetState(  ) void ;
+function OnAbort(  ) void ;
+// }} ""
+// {{{ 5 "OnAbort" "Begin"
+function OnAbort(  ) void {
+// }} ""
+// {{ 5 "OnAbort" "InitLocals"
+// }} ""
+// {{ 85 1 0 "507df2f8_997a_4aa7_828eb0ced57b2f66" "{B31F3538-5D80-11d4-A5EB-0050DA737D89}"
+if( 0 != com_port_handle.Close() )
+{
+    MECC::RaiseRuntimeErrorEx(-1456602880, MECC::IDS::stepNameFileClose, MECC::IDS::errorStepFailed, "", "HxMetEdCompCmd");
+}
+com_port_handle.RemoveFields();
+// }} ""
+// {{{ 5 "OnAbort" "End"
+}
+// }} ""
+// {{{ 5 "ThreadGetState" "Begin"
+private function ThreadGetState(  ) void {
+// }} ""
+private variable thread_com_port_data;
+// {{ 5 "ThreadGetState" "InitLocals"
+// }} ""
+// {{ 74 1 0 "b045024b_1f9b_4ae6_b650490a028e6ce3" "{B31F3532-5D80-11d4-A5EB-0050DA737D89}"
+{
+loopCounter1 = 0;
+while (1 == 1)
+{
+loopCounter1 = loopCounter1 + 1;
+// }} ""
+// {{{ 75 1 0 "5d4919d5_65ab_4f13_870da8e25ad39e19" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+thread_com_port_data = FilReadString(com_port_handle);
+// }} ""
+// {{ 76 1 0 "e7f5623b_2f59_47a0_b17ed25a686169dd" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+if (thread_com_port_data != "")
+{
+// }} ""
+// {{ 77 1 0 "a4cf106d_faaa_4443_a36818cf7fd0589c" "{F07B0071-8EFC-11d4-A3BA-002035848439}"
+
+// }} ""
+// {{{ 78 1 0 "6c2cffcc_efb8_4a4d_8fa1173a1a9416ab" "{C1F3C015-47B3-4514-9407-AC2E65043419}"
+FilWriteString(com_port_handle, Translate("Busy"));
+// }} ""
+// {{ 79 1 0 "e7f5623b_2f59_47a0_b17ed25a686169dd" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+}
+// }} ""
+// {{ 80 1 0 "e568d130_9a7a_4b73_b14815d09224f8f3" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+if (int_thread_kill_flag == 1)
+{
+// }} ""
+// {{ 81 1 0 "e879bd38_058c_42b3_9716277fa5c3bf0e" "{B31F3533-5D80-11d4-A5EB-0050DA737D89}"
+break;
+// }} ""
+// {{ 82 1 0 "e568d130_9a7a_4b73_b14815d09224f8f3" "{B31F3531-5D80-11d4-A5EB-0050DA737D89}"
+}
+// }} ""
+// {{ 83 1 0 "b045024b_1f9b_4ae6_b650490a028e6ce3" "{B31F3532-5D80-11d4-A5EB-0050DA737D89}"
+}
+}
+// }} ""
+// {{{ 5 "ThreadGetState" "End"
+}
+// }} ""
+/* {{ 2 "SubmethodInsertLine" "" */ // }} ""
+// $$author=birdbare$$valid=0$$time=2026-04-09 18:15$$checksum=a9be7119$$length=087$$
