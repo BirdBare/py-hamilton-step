@@ -12,11 +12,11 @@ class HamiltonDevice:
         self.connection = connection
         self.busy: bool = False
 
-    async def execute_command(self, command: HamiltonCommand[HamiltonResponseType]) -> HamiltonResponseType:
+    async def _execute_command_json(self, command_json: dict) -> dict:
         if self.busy:
             raise RuntimeError("Device is busy executing another command")
 
-        await self.connection.send(f"{json.dumps(command.as_dict())}\n")
+        await self.connection.send(f"{json.dumps(command_json)}\n")
 
         if await self.connection.receive() != "CommandAccepted":
             raise RuntimeError(f"Command does not exist on the device: {HamiltonDevice.__name__}")
@@ -40,5 +40,10 @@ class HamiltonDevice:
             )
 
         del response_data["programmatic_error_description"]
+
+        return response_data
+
+    async def execute_command(self, command: HamiltonCommand[HamiltonResponseType]) -> HamiltonResponseType:
+        response_data = await self._execute_command_json(command.as_dict())
 
         return command.parse_response(response_data)
