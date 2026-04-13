@@ -74,7 +74,7 @@ class HamiltonStepReturnBlockDataPackage:
                 "Refill",
             ]
         )
-        step_data: typing.Any
+        step_data: typing.Any | None
         labware_name: str
         labware_pos: str
 
