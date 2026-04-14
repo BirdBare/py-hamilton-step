@@ -1,7 +1,7 @@
 import dataclasses
 import typing
 
-from .errors import HamiltonError, _main_error_by_id
+from .errors import VenusError, _main_error_by_id
 
 _err_flag_by_id: dict[int, typing.Literal["No error", "Recoverable error", "Fatal error"]] = {
     0: "No error",
@@ -46,7 +46,7 @@ _recovery_button_by_id: dict[
 
 
 @dataclasses.dataclass(frozen=True)
-class HamiltonStepReturnBlockDataPackage:
+class VenusStepReturnBlockDataPackage:
     """Base class for hamilton block data package."""
 
     @dataclasses.dataclass(frozen=True)
@@ -54,7 +54,7 @@ class HamiltonStepReturnBlockDataPackage:
         """Base class for hamilton block data."""
 
         num: int
-        main_err: None | type[HamiltonError]
+        main_err: None | type[VenusError]
         slave_err: None | str
         recovery_button: (
             None
@@ -82,7 +82,7 @@ class HamiltonStepReturnBlockDataPackage:
     block_data: list[_StepReturnBlockData]
 
     @staticmethod
-    def parse_raw_step_return(raw_step_return: str) -> "HamiltonStepReturnBlockDataPackage":
+    def parse_raw_step_return(raw_step_return: str) -> "VenusStepReturnBlockDataPackage":
         raw_block_data = raw_step_return.split("[")
         err_flag_id = raw_block_data.pop(0)
 
@@ -93,7 +93,7 @@ class HamiltonStepReturnBlockDataPackage:
                 raise ValueError(f"Invalid block data: {data}")
 
             block_data.append(
-                HamiltonStepReturnBlockDataPackage._StepReturnBlockData(
+                VenusStepReturnBlockDataPackage._StepReturnBlockData(
                     num=int(values[0]),
                     main_err=_main_error_by_id[int(values[1])],
                     slave_err=values[2] if values[2] != "0" else None,
@@ -104,14 +104,14 @@ class HamiltonStepReturnBlockDataPackage:
                 ),
             )
 
-        return HamiltonStepReturnBlockDataPackage(
+        return VenusStepReturnBlockDataPackage(
             err_flag=_err_flag_by_id[int(err_flag_id)],
             block_data=block_data,
         )
 
 
 @dataclasses.dataclass(frozen=True)
-class HamiltonStepReturnStructuredDataPackage:
+class VenusStepReturnStructuredDataPackage:
     """Base class for hamilton block data package."""
 
     @dataclasses.dataclass(frozen=True)
@@ -124,7 +124,7 @@ class HamiltonStepReturnStructuredDataPackage:
     structured_data: list[_StepReturnStructuredData]
 
     @staticmethod
-    def parse_raw_step_return(raw_step_return: str) -> "HamiltonStepReturnStructuredDataPackage":
+    def parse_raw_step_return(raw_step_return: str) -> "VenusStepReturnStructuredDataPackage":
         raw_description_data = raw_step_return.split("[")
         raw_description_data.pop(0)  # First element is always empty.
 
@@ -135,12 +135,12 @@ class HamiltonStepReturnStructuredDataPackage:
                 raise ValueError(f"Invalid description data: {data}")
 
             structured_data.append(
-                HamiltonStepReturnStructuredDataPackage._StepReturnStructuredData(
+                VenusStepReturnStructuredDataPackage._StepReturnStructuredData(
                     num=int(values[0]),
                     data=values[1],
                 ),
             )
 
-        return HamiltonStepReturnStructuredDataPackage(
+        return VenusStepReturnStructuredDataPackage(
             structured_data=structured_data,
         )

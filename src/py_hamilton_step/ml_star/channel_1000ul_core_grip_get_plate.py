@@ -1,21 +1,21 @@
 import dataclasses
 import typing
 
-from ..hamilton import HamiltonCommand, HamiltonResponse, HamiltonStepReturnBlockDataPackage
+from ..venus import VenusCommand, VenusResponse, VenusStepReturnBlockDataPackage
 
 
 @dataclasses.dataclass(frozen=True)
-class Channel1000ulCoreGripGetPlateResponse(HamiltonResponse):
+class Channel1000ulCoreGripGetPlateResponse(VenusResponse):
     raw_get_plate_data_with_recovery_details: str
-    get_plate_data_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    get_plate_data_with_recovery_details: VenusStepReturnBlockDataPackage = dataclasses.field(init=False)
     raw_channel_sequences_with_recovery_details: str
-    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage | None = dataclasses.field(init=False)
+    channel_sequences_with_recovery_details: VenusStepReturnBlockDataPackage | None = dataclasses.field(init=False)
 
     def __post_init__(self):
         object.__setattr__(
             self,
             "get_plate_data_with_recovery_details",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_get_plate_data_with_recovery_details),
+            VenusStepReturnBlockDataPackage.parse_raw_step_return(self.raw_get_plate_data_with_recovery_details),
         )
         if self.raw_channel_sequences_with_recovery_details == "":
             object.__setattr__(self, "channel_sequences_with_recovery_details", None)
@@ -23,7 +23,7 @@ class Channel1000ulCoreGripGetPlateResponse(HamiltonResponse):
             object.__setattr__(
                 self,
                 "channel_sequences_with_recovery_details",
-                HamiltonStepReturnBlockDataPackage.parse_raw_step_return(
+                VenusStepReturnBlockDataPackage.parse_raw_step_return(
                     self.raw_channel_sequences_with_recovery_details,
                 ),
             )
@@ -52,7 +52,7 @@ _used_front_channel_setting_by_name = {
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class Channel1000ulCoreGripGetPlateCommand(HamiltonCommand):
+class Channel1000ulCoreGripGetPlateCommand(VenusCommand):
     transport_mode: typing.Literal["Plate only", "Lid only", "Plate with lid"] = "Plate only"
     plate_sequence_labware: str | None = None
     lid_sequence_labware: str | None = None

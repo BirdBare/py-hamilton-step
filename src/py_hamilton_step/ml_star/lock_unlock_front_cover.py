@@ -1,17 +1,17 @@
 import dataclasses
 import typing
 
-from ..hamilton import (
-    HamiltonCommand,
-    HamiltonResponse,
-    HamiltonStepReturnBlockDataPackage,
+from ..venus import (
+    VenusCommand,
+    VenusResponse,
+    VenusStepReturnBlockDataPackage,
 )
 
 
 @dataclasses.dataclass(frozen=True)
-class LockUnlockFrontCoverResponse(HamiltonResponse):
+class LockUnlockFrontCoverResponse(VenusResponse):
     raw_cover_lock_status_as_block_data: str
-    cover_lock_status_as_block_data: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    cover_lock_status_as_block_data: VenusStepReturnBlockDataPackage = dataclasses.field(init=False)
 
     raw_cover_lock_status_flag: int
     cover_lock_status_flag: str = dataclasses.field(init=False)
@@ -20,7 +20,7 @@ class LockUnlockFrontCoverResponse(HamiltonResponse):
         object.__setattr__(
             self,
             "cover_lock_status_as_block_data",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_cover_lock_status_as_block_data),
+            VenusStepReturnBlockDataPackage.parse_raw_step_return(self.raw_cover_lock_status_as_block_data),
         )
 
         object.__setattr__(
@@ -37,7 +37,7 @@ _front_setting_by_name = {
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class LockUnlockFrontCoverCommand(HamiltonCommand):
+class LockUnlockFrontCoverCommand(VenusCommand):
     front: typing.Literal["unlocked", "locked"] = "locked"
 
     def as_dict(self) -> dict:

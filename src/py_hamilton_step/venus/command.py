@@ -3,11 +3,11 @@ import dataclasses
 import typing
 import uuid
 
-HamiltonResponseType = typing.TypeVar("HamiltonResponseType", bound="HamiltonResponse")
+VenusResponseType = typing.TypeVar("VenusResponseType", bound="VenusResponse")
 
 
 @dataclasses.dataclass(frozen=True)
-class HamiltonResponse(abc.ABC):
+class VenusResponse(abc.ABC):
     """
     Base class for all Hamilton responses.
     The communication contract is that all serialized responses will contain the following fields:
@@ -18,7 +18,7 @@ class HamiltonResponse(abc.ABC):
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class HamiltonCommand(abc.ABC, typing.Generic[HamiltonResponseType]):
+class VenusCommand(abc.ABC, typing.Generic[VenusResponseType]):
     """
     Base class for all Hamilton commands.
     The communication contract is that all serialized command will contain the following fields:
@@ -40,5 +40,5 @@ class HamiltonCommand(abc.ABC, typing.Generic[HamiltonResponseType]):
 
     @staticmethod
     @abc.abstractmethod
-    def parse_response(data: dict) -> HamiltonResponseType:
+    def parse_response(data: dict) -> VenusResponseType:
         pass

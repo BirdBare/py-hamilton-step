@@ -1,19 +1,19 @@
 import dataclasses
 import typing
 
-from ..hamilton import HamiltonCommand, HamiltonResponse, HamiltonStepReturnBlockDataPackage
+from ..venus import VenusCommand, VenusResponse, VenusStepReturnBlockDataPackage
 
 
 @dataclasses.dataclass(frozen=True)
-class Channel1000ulTipPickupResponse(HamiltonResponse):
+class Channel1000ulTipPickupResponse(VenusResponse):
     raw_channel_sequences_with_recovery_details: str
-    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    channel_sequences_with_recovery_details: VenusStepReturnBlockDataPackage = dataclasses.field(init=False)
 
     def __post_init__(self):
         object.__setattr__(
             self,
             "channel_sequences_with_recovery_details",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
+            VenusStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
         )
 
 
@@ -25,7 +25,7 @@ class Channel1000ulTipPickupChannelConfig:
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class Channel1000ulTipPickupCommand(HamiltonCommand):
+class Channel1000ulTipPickupCommand(VenusCommand):
     channel_configs: tuple[Channel1000ulTipPickupChannelConfig, ...]
 
     def as_dict(self) -> dict:

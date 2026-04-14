@@ -5,7 +5,7 @@ import platform
 import serial_asyncio
 
 
-class HamiltonConnection(abc.ABC):
+class VenusConnection(abc.ABC):
     @abc.abstractmethod
     async def connect(self) -> None:
         pass
@@ -30,9 +30,9 @@ class HamiltonConnection(abc.ABC):
         await self.disconnect()
 
 
-class UnixSocketConnection(HamiltonConnection):
+class UnixSocketConnection(VenusConnection):
     """
-    Implementation of HamiltonConnection using Unix domain sockets.
+    Implementation of VenusConnection using Unix domain sockets.
     Meant to be used for communication where python is running on a unix machine and Venus is running in a virtual machine.
     General use is MacOS host with parallels running a windows VM with Venus.
     Venus must be started manually on the windows VM
@@ -71,9 +71,9 @@ class UnixSocketConnection(HamiltonConnection):
         return line.decode().strip()
 
 
-class WindowsVirtualCOMConnection(HamiltonConnection):
+class WindowsVirtualCOMConnection(VenusConnection):
     """
-    Implementation of HamiltonConnection using virtual COM ports.
+    Implementation of VenusConnection using virtual COM ports.
     Meant to be used for communication where python and Venus are running on the same windows machine.
     Venus will be started automatically as a subprocess.
     """

@@ -1,14 +1,14 @@
 import asyncio
 import json
 
-from .command import HamiltonCommand, HamiltonResponseType
-from .connection import HamiltonConnection
+from .command import VenusCommand, VenusResponseType
+from .connection import VenusConnection
 
 POLL_INTERVAL = 0.1  # seconds — tune to your device's typical response time
 
 
-class HamiltonDevice:
-    def __init__(self, connection: HamiltonConnection):
+class VenusExecutor:
+    def __init__(self, connection: VenusConnection):
         self.connection = connection
         self.busy: bool = False
 
@@ -19,7 +19,7 @@ class HamiltonDevice:
         await self.connection.send(f"{json.dumps(command_json)}\n")
 
         if await self.connection.receive() != "CommandAccepted":
-            raise RuntimeError(f"Command does not exist on the device: {HamiltonDevice.__name__}")
+            raise RuntimeError("Command does not exist")
 
         self.busy = True
 
@@ -43,7 +43,7 @@ class HamiltonDevice:
 
         return response_data
 
-    async def execute_command(self, command: HamiltonCommand[HamiltonResponseType]) -> HamiltonResponseType:
+    async def execute_command(self, command: VenusCommand[VenusResponseType]) -> VenusResponseType:
         response_data = await self._execute_command_json(command.as_dict())
 
         return command.parse_response(response_data)

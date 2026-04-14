@@ -1,19 +1,19 @@
 import dataclasses
 import typing
 
-from ..hamilton import HamiltonCommand, HamiltonResponse, HamiltonStepReturnBlockDataPackage
+from ..venus import VenusCommand, VenusResponse, VenusStepReturnBlockDataPackage
 
 
 @dataclasses.dataclass(frozen=True)
-class Channel1000ulAspirateResponse(HamiltonResponse):
+class Channel1000ulAspirateResponse(VenusResponse):
     raw_channel_sequences_with_recovery_details: str
-    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    channel_sequences_with_recovery_details: VenusStepReturnBlockDataPackage = dataclasses.field(init=False)
 
     def __post_init__(self):
         object.__setattr__(
             self,
             "channel_sequences_with_recovery_details",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
+            VenusStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
         )
 
 
@@ -79,7 +79,7 @@ _on_off_setting_by_name = {
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class Channel1000ulAspirateCommand(HamiltonCommand):
+class Channel1000ulAspirateCommand(VenusCommand):
     channel_configs: tuple[Channel1000ulAspirateChannelConfig, ...]
 
     def as_dict(self) -> dict:

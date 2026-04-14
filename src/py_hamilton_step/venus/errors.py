@@ -1,119 +1,119 @@
-class HamiltonError(Exception):
+class VenusError(Exception):
     """
     Errors that can be returned by the Hamilton device.
     """
 
 
-class HamiltonSyntaxError(HamiltonError):
+class VenusSyntaxError(VenusError):
     """
     There is an incorrect set of parameters or parameter ranges.
     """
 
 
-class HardwareError(HamiltonError):
+class HardwareError(VenusError):
     """
     Steps lost on one or more hardware components, or component not initialized or not functioning.
     """
 
 
-class NotExecutedError(HamiltonError):
+class NotExecutedError(VenusError):
     """
     There was an error in previous part command.
     """
 
 
-class ClotError(HamiltonError):
+class ClotError(VenusError):
     """
     Blood clot detected.
     """
 
 
-class BarcodeError(HamiltonError):
+class BarcodeError(VenusError):
     """
     Barcode could not be read or is missing.
     """
 
 
-class InsufficientLiquidError(HamiltonError):
+class InsufficientLiquidError(VenusError):
     """
     Not enough liquid available.
     """
 
 
-class TipPresentError(HamiltonError):
+class TipPresentError(VenusError):
     """
     A tip has already been picked up.
     """
 
 
-class NoTipError(HamiltonError):
+class NoTipError(VenusError):
     """
     Tip is missing or not picked up.
     """
 
 
-class NoCarrierError(HamiltonError):
+class NoCarrierError(VenusError):
     """
     No carrier present for loading.
     """
 
 
-class ExecutionError(HamiltonError):
+class ExecutionError(VenusError):
     """
     A step or a part of a step could not be processed.
     """
 
 
-class PressureLLDError(HamiltonError):
+class PressureLLDError(VenusError):
     """
     A dispense with pressure liquid level detection is not allowed.
     """
 
 
-class CalibrateError(HamiltonError):
+class CalibrateError(VenusError):
     """
     No capacitive signal detected during carrier calibration procedure.
     """
 
 
-class UnloadError(HamiltonError):
+class UnloadError(VenusError):
     """
     Not possible to unload the carrier due to occupied loading tray position.
     """
 
 
-class ParameterError(HamiltonError):
+class ParameterError(VenusError):
     """
     Dispense in jet mode with pressure liquid level detection is not allowed.
     """
 
 
-class CoverOpenError(HamiltonError):
+class CoverOpenError(VenusError):
     """
     Cover not closed or can not be locked.
     """
 
 
-class ImproperAspirationError(HamiltonError):
+class ImproperAspirationError(VenusError):
     """
     Improper Dispense Error
     The pressure-based aspirate/dispense control reported an error ( not enough liquid ).
     """
 
 
-class WashLiquidError(HamiltonError):
+class WashLiquidError(VenusError):
     """
     Waste is full or no more wash liquid is available.
     """
 
 
-class TemperatureError(HamiltonError):
+class TemperatureError(VenusError):
     """
     Incubator temperature out of range.
     """
 
 
-class TADMovershot(HamiltonError):
+class TADMovershot(VenusError):
     """
     Overshot of limits during aspirate or dispense.
 
@@ -124,37 +124,37 @@ class TADMovershot(HamiltonError):
     """
 
 
-class LabwareError(HamiltonError):
+class LabwareError(VenusError):
     """
     Labware not available.
     """
 
 
-class LabwareGrippedError(HamiltonError):
+class LabwareGrippedError(VenusError):
     """
     Labware already gripped.
     """
 
 
-class LabwareLostError(HamiltonError):
+class LabwareLostError(VenusError):
     """
     Labware lost during transport.
     """
 
 
-class Illegaltargetplateposition(HamiltonError):
+class Illegaltargetplateposition(VenusError):
     """
     Unable to place plate; plate was gripped in the wrong direction.
     """
 
 
-class IllegalInterventionError(HamiltonError):
+class IllegalInterventionError(VenusError):
     """
     Cover was opened or a carrier was removed manually.
     """
 
 
-class TADMundershot(HamiltonError):
+class TADMundershot(VenusError):
     """
     Undershot of limits during aspirate or dispense.
 
@@ -165,94 +165,94 @@ class TADMundershot(HamiltonError):
     """
 
 
-class PositionError(HamiltonError):
+class PositionError(VenusError):
     """
     The position is out of range.
     """
 
 
-class UnexpectedcLLDError(HamiltonError):
+class UnexpectedcLLDError(VenusError):
     """
     The cLLD detected a liquid level above start height of liquid level search.
     """
 
 
-class Areaalreadyoccupied(HamiltonError):
+class Areaalreadyoccupied(VenusError):
     """
     Instrument region already reserved.
     """
 
 
-class Impossibletooccupyarea(HamiltonError):
+class Impossibletooccupyarea(VenusError):
     """
     Unable to reserve a region on the instrument.
     """
 
 
-class Antidropcontrolerror(HamiltonError):
+class Antidropcontrolerror(VenusError):
     """
     Anti drop controlling out of tolerance.
     """
 
 
-class Decappererror(HamiltonError):
+class Decappererror(VenusError):
     """
     Decapper lock error while screw / unscrew a cap by twister channels.
     """
 
 
-class Decapperhandlingerror(HamiltonError):
+class Decapperhandlingerror(VenusError):
     """
     Decapper station error while lock / unlock a cap.
     """
 
 
-class SlaveError(HamiltonError):
+class SlaveError(VenusError):
     """
     Slave error.
     """
 
 
-class WrongCarrierError(HamiltonError):
+class WrongCarrierError(VenusError):
     """
     Incorrect carrier barcode detected.
     """
 
 
-class NoCarrierBarcodeError(HamiltonError):
+class NoCarrierBarcodeError(VenusError):
     """
     Carrier barcode could not be read or is missing.
     """
 
 
-class LiquidLevelError(HamiltonError):
+class LiquidLevelError(VenusError):
     """
     Liquid surface not detected.
     This error is created from main/slave errors 06/70, 06/73 and 06/87.
     """
 
 
-class NotDetectedError(HamiltonError):
+class NotDetectedError(VenusError):
     """
     Carrier not detected at deck end position.
     """
 
 
-class NotAspiratedError(HamiltonError):
+class NotAspiratedError(VenusError):
     """
     Dispense volume exceeds the aspirated volume.
     This error is created from main / slave error 02/54.
     """
 
 
-class ImproperDispensationError(HamiltonError):
+class ImproperDispensationError(VenusError):
     """
     The dispensed volume is out of tolerance (may only occur for Nano Pipettor Dispense steps).
     This error is created from main/slave errors 02/52 and 02/54.
     """
 
 
-class NoLabwareError(HamiltonError):
+class NoLabwareError(VenusError):
     """
     The labware to be loaded was not detected by autoload module.
 
@@ -262,51 +262,51 @@ class NoLabwareError(HamiltonError):
     """
 
 
-class UnexpectedLabwareError(HamiltonError):
+class UnexpectedLabwareError(VenusError):
     """
     The labware contains an unexpected barcode (can only occur on a Reload Carrier step).
     """
 
 
-class WrongLabwareError(HamiltonError):
+class WrongLabwareError(VenusError):
     """
     The labware to be reloaded contains the incorrect barcode (can only occur on a Reload Carrier step).
     """
 
 
-class BarcodeMaskError(HamiltonError):
+class BarcodeMaskError(VenusError):
     """
     The barcode read doesn't match the barcode mask defined.
     """
 
 
-class BarcodeNotUniqueError(HamiltonError):
+class BarcodeNotUniqueError(VenusError):
     """
     The barcode read is not unique. Previously loaded labware with the same barcode was loaded without unique barcode check.
     """
 
 
-class BarcodeAlreadyUsedError(HamiltonError):
+class BarcodeAlreadyUsedError(VenusError):
     """
     The barcode read is already loaded as unique barcode (i.e., it's not possible to load the same barcode twice ).
     """
 
 
-class KitLotExpiredError(HamiltonError):
+class KitLotExpiredError(VenusError):
     """
     Kit Lot expired.
     """
 
 
-class DelimiterError(HamiltonError):
+class DelimiterError(VenusError):
     """
     Barcode contains a character that is used as a delimiter in the result string.
     """
 
 
-_main_error_by_id: dict[int, type[HamiltonError] | None] = {
+_main_error_by_id: dict[int, type[VenusError] | None] = {
     0: None,
-    1: HamiltonSyntaxError,
+    1: VenusSyntaxError,
     2: HardwareError,
     3: NotExecutedError,
     4: ClotError,

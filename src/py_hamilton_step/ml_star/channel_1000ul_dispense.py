@@ -1,19 +1,19 @@
 import dataclasses
 import typing
 
-from ..hamilton import HamiltonCommand, HamiltonResponse, HamiltonStepReturnBlockDataPackage
+from ..venus import VenusCommand, VenusResponse, VenusStepReturnBlockDataPackage
 
 
 @dataclasses.dataclass(frozen=True)
-class Channel1000ulDispenseResponse(HamiltonResponse):
+class Channel1000ulDispenseResponse(VenusResponse):
     raw_channel_sequences_with_recovery_details: str
-    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    channel_sequences_with_recovery_details: VenusStepReturnBlockDataPackage = dataclasses.field(init=False)
 
     def __post_init__(self):
         object.__setattr__(
             self,
             "channel_sequences_with_recovery_details",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
+            VenusStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
         )
 
 
@@ -87,7 +87,7 @@ _z_move_setting_by_name = {
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class Channel1000ulDispenseCommand(HamiltonCommand):
+class Channel1000ulDispenseCommand(VenusCommand):
     side_touch: typing.Literal["Off", "On"] = "Off"
     z_move_after_step: typing.Literal["normal", "minimized"] = "normal"
     channel_configs: tuple[Channel1000ulDispenseChannelConfig, ...]
