@@ -9,7 +9,7 @@ class Channel1000ulCoreGripPlacePlateResponse(HamiltonResponse):
     raw_place_plate_data_with_recovery_details: str
     place_plate_data_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
     raw_channel_sequences_with_recovery_details: str
-    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage = dataclasses.field(init=False)
+    channel_sequences_with_recovery_details: HamiltonStepReturnBlockDataPackage | None = dataclasses.field(init=False)
 
     def __post_init__(self):
         object.__setattr__(
@@ -17,11 +17,16 @@ class Channel1000ulCoreGripPlacePlateResponse(HamiltonResponse):
             "place_plate_data_with_recovery_details",
             HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_place_plate_data_with_recovery_details),
         )
-        object.__setattr__(
-            self,
-            "channel_sequences_with_recovery_details",
-            HamiltonStepReturnBlockDataPackage.parse_raw_step_return(self.raw_channel_sequences_with_recovery_details),
-        )
+        if self.raw_channel_sequences_with_recovery_details == "":
+            object.__setattr__(self, "channel_sequences_with_recovery_details", None)
+        else:
+            object.__setattr__(
+                self,
+                "channel_sequences_with_recovery_details",
+                HamiltonStepReturnBlockDataPackage.parse_raw_step_return(
+                    self.raw_channel_sequences_with_recovery_details,
+                ),
+            )
 
 
 _transport_mode_setting_by_name = {
